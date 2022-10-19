@@ -379,6 +379,7 @@ class Visualizer:
         )
         self._instance_mode = instance_mode
         self.keypoint_threshold = _KEYPOINT_THRESHOLD
+        self.image_mask = None
 
     def draw_instance_predictions(self, predictions):
         """
@@ -536,6 +537,7 @@ class Visualizer:
     draw_panoptic_seg_predictions = draw_panoptic_seg  # backward compatibility
 
     def draw_dataset_dict(self, dic):
+        print("start draw_dataset_dict")
         """
         Draw annotations/segmentaions in Detectron2 Dataset format.
 
@@ -581,7 +583,7 @@ class Visualizer:
             self.overlay_instances(
                 labels=labels, boxes=boxes, masks=masks, keypoints=keypts, assigned_colors=colors
             )
-
+        self.image_mask = masks
         sem_seg = dic.get("sem_seg", None)
         if sem_seg is None and "sem_seg_file_name" in dic:
             with PathManager.open(dic["sem_seg_file_name"], "rb") as f:
